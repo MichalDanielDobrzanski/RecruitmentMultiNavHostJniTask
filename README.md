@@ -19,3 +19,6 @@ Fork this repo. Explore existing code. It has some good bits and some bad bits. 
 - Anything else you want to do
     - Improve the UI
     - Use any library you want
+
+## Resources:
+- [Saving state in view pager](https://newfivefour.com/android-viewpager-saving-state-without-fragments.html)
