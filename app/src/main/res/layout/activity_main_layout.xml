@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ViewAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contentViewAnimator"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <include layout="@layout/main_loading_view" />
+
+    <include layout="@layout/main_content_view" />
+
+    <include layout="@layout/main_error_view" />
+
+</ViewAnimator>

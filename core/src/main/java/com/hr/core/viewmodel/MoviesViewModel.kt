@@ -24,5 +24,7 @@ class MoviesViewModel @ViewModelInject constructor(
             }
 
 
-    fun fetch(): LiveData<MoviesViewState> = LiveDataReactiveStreams.fromPublisher(moviesViewStateStream)
+    fun observeMovies(): LiveData<MoviesViewState> = LiveDataReactiveStreams.fromPublisher(moviesViewStateStream)
+
+    fun fetch() = moviesRepository.fetch()
 }

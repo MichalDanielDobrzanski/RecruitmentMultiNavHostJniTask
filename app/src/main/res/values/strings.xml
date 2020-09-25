@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">HR Test</string>
+    <string name="retry_text">Retry</string>
+    <string name="data_error_text">There was an error with fetching movies data. Please retry.</string>
 </resources>
