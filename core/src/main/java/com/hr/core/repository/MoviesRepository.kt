@@ -1,7 +1,6 @@
 package com.hr.core.repository
 
 import com.hr.models.Movie
-import com.hr.models.Name
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.processors.BehaviorProcessor
@@ -23,7 +22,7 @@ class DummyMoviesRepositoryThatShouldBeReplaced : MoviesRepository {
             .timer(2L, TimeUnit.SECONDS)
             .map { _ ->
                 MoviesRepositoryModel.Data(0.until(20).map {
-                    Movie(Name("Dummy movie title $it"))
+                    Movie("Dummy movie title $it", 0)
                 })
             }
 

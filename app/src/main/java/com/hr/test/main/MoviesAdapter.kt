@@ -35,7 +35,7 @@ class MoviesAdapter(
 
         fun bind(movie: ContentMovieViewStateData) {
             likedMovieState = movie.liked
-            movieName = movie.movie.name.value
+            movieName = movie.movie.name
             itemView.apply {
                 titleTextView.text = movieName
                 likeButton.setBackgroundResource(if (likedMovieState) R.drawable.ic_like_icon else R.drawable.ic_not_liked_icon)

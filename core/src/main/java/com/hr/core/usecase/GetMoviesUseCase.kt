@@ -27,7 +27,7 @@ class GetMoviesUseCase @Inject constructor(
         val merged = mutableListOf<ContentMovieViewStateData>()
         val likesMap: Map<String, Boolean> = likedMoviesRepository.getState()
         model.movieList.forEach { movie: Movie ->
-            val name = movie.name.value
+            val name = movie.name
             likesMap[name]
                 ?.let { liked: Boolean -> merged.add(ContentMovieViewStateData(movie, liked)) }
                 ?: merged.add(ContentMovieViewStateData(movie, false))
