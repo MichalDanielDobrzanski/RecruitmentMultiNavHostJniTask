@@ -1,4 +1,2 @@
+include ':app', ':models', ':core'
 rootProject.name = "HR Test"
-include ':app'
-include ':models'
-include ':core'
