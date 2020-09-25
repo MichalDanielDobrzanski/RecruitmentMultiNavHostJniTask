@@ -1,11 +1,12 @@
-package com.hr.test
+package com.hr.test.main
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hr.models.Movie
+import com.hr.test.R
+import kotlinx.android.synthetic.main.movie_item_view.view.*
 
 class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
 
@@ -24,9 +25,9 @@ class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) = holder.bind(movies[position])
 
-    data class MovieViewHolder(val itemView: View) : RecyclerView.ViewHolder(itemView) {
+    data class MovieViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         fun bind(movie: Movie) {
-            itemView.findViewById<TextView>(R.id.titleTextView).text = movie.name.value
+            itemView.titleTextView.text = movie.name.value
         }
     }
 }

@@ -1,15 +1,16 @@
-package com.hr.test
+package com.hr.test.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.hr.test.MoviesModule.moviesViewModel
-import com.koduok.mvi.android.shank.collectStatesOn
-import life.shank.android.AutoScoped
-import life.shank.android.onReadyFor
+import com.hr.core.viewmodel.MoviesViewModel
+import com.hr.test.R
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : AppCompatActivity(), AutoScoped {
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,10 +21,7 @@ class MainActivity : AppCompatActivity(), AutoScoped {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        moviesViewModel.onReadyFor(this) { it.refresh() }
-        moviesViewModel.collectStatesOn(this) { _, state ->
-            adapter.setMovies(state.movies)
-        }
+        ViewModelProvider(this).get(MoviesViewModel::class.java).fetch()
     }
 
 }
