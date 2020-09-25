@@ -5,9 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.hr.core.viewmodel.ContentMovieViewStateData
 import com.hr.core.viewmodel.MoviesViewModel
 import com.hr.core.viewmodel.MoviesViewState
-import com.hr.models.Movie
 import com.hr.test.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main_layout.*
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
             renderLoading()
         }
         is MoviesViewState.Content -> {
-            renderContent(viewState.campaignModelList)
+            renderContent(viewState.movieList)
         }
         MoviesViewState.Error -> {
             renderError()
@@ -46,12 +46,14 @@ class MainActivity : AppCompatActivity() {
         contentViewAnimator.displayedChild = LOADING_INDEX
     }
 
-    private fun renderContent(campaignModelList: List<Movie>) {
+    private fun renderContent(campaignModelList: List<ContentMovieViewStateData>) {
         contentViewAnimator.displayedChild = CONTENT_INDEX
         contentMovieListRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = MoviesAdapter().apply { setMovies(campaignModelList) }
+            adapter = MoviesAdapter { movieName, liked ->
+                viewModel.updateLike(movieName, liked)
+            }.apply { setMovies(campaignModelList) }
         }
     }
 

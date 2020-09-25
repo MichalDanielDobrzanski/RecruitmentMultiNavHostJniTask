@@ -9,7 +9,12 @@ sealed class MoviesViewState {
 
     object Loading : MoviesViewState()
 
-    data class Content(val campaignModelList: List<Movie>) : MoviesViewState()
+    data class Content(val movieList: List<ContentMovieViewStateData>) : MoviesViewState()
 
     object Error : MoviesViewState()
 }
+
+data class ContentMovieViewStateData(
+    val movie: Movie,
+    val liked: Boolean
+)
