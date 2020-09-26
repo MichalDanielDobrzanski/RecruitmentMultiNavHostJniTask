@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
-
         if (savedInstanceState == null) {
             tabManager.useStartingController()
         }
@@ -77,7 +76,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         tabManager.switchTab(menuItem.itemId)
         return true
     }
-
 }
 
 private const val LOADING_INDEX = 0

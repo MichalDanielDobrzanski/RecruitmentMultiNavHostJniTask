@@ -5,18 +5,18 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class LikedMoviesRepositoryImplTest {
+internal class LikedMoviesCacheImplTest {
 
-    lateinit var likedMoviesRepository: LikedMoviesRepository
+    lateinit var likedMoviesCache: LikedMoviesCache
 
     @BeforeEach
     fun setup() {
-        likedMoviesRepository = LikedMoviesRepositoryImpl()
+        likedMoviesCache = LikedMoviesCacheImpl()
     }
 
     @Test
     fun `Should begin with empty state for map`() {
-        assertEquals(0, likedMoviesRepository.getState().size)
+        assertEquals(0, likedMoviesCache.getState().size)
     }
 
     @Test
@@ -25,10 +25,10 @@ internal class LikedMoviesRepositoryImplTest {
         val movie = "Chicken run"
 
         // when
-        likedMoviesRepository.updateLike(movie, true)
+        likedMoviesCache.updateLike(movie, true)
 
         // then
-        val state = likedMoviesRepository.getState()
+        val state = likedMoviesCache.getState()
         assert(state.containsKey(movie))
         assert(state[movie] ?: error(""))
         assertEquals(1, state.size)
@@ -40,10 +40,10 @@ internal class LikedMoviesRepositoryImplTest {
         val movie = "Fifth element"
 
         // when
-        likedMoviesRepository.updateLike(movie, false)
+        likedMoviesCache.updateLike(movie, false)
 
         // then
-        val state = likedMoviesRepository.getState()
+        val state = likedMoviesCache.getState()
         assert(state.containsKey(movie))
         assertFalse(state[movie]?: error(""))
         assertEquals(1, state.size)
@@ -55,13 +55,13 @@ internal class LikedMoviesRepositoryImplTest {
         val movie = "Fifth element"
 
         // when
-        likedMoviesRepository.updateLike(movie, true)
-        likedMoviesRepository.updateLike(movie, true)
-        likedMoviesRepository.updateLike(movie, true)
-        likedMoviesRepository.updateLike(movie, true)
+        likedMoviesCache.updateLike(movie, true)
+        likedMoviesCache.updateLike(movie, true)
+        likedMoviesCache.updateLike(movie, true)
+        likedMoviesCache.updateLike(movie, true)
 
         // then
-        val state = likedMoviesRepository.getState()
+        val state = likedMoviesCache.getState()
         assert(state.containsKey(movie))
         assert(state[movie] ?: error(""))
         assertEquals(1, state.size)
@@ -73,13 +73,13 @@ internal class LikedMoviesRepositoryImplTest {
         val movie = "Fifth element"
 
         // when
-        likedMoviesRepository.updateLike(movie, false)
-        likedMoviesRepository.updateLike(movie, false)
-        likedMoviesRepository.updateLike(movie, false)
-        likedMoviesRepository.updateLike(movie, false)
+        likedMoviesCache.updateLike(movie, false)
+        likedMoviesCache.updateLike(movie, false)
+        likedMoviesCache.updateLike(movie, false)
+        likedMoviesCache.updateLike(movie, false)
 
         // then
-        val state = likedMoviesRepository.getState()
+        val state = likedMoviesCache.getState()
         assert(state.containsKey(movie))
         assertFalse(state[movie] ?: error(""))
         assertEquals(1, state.size)

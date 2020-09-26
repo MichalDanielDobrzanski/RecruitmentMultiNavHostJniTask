@@ -11,9 +11,10 @@ import java.util.concurrent.TimeUnit
 
 interface MoviesRepository {
     fun fetchMovies()
+
     fun moviesStream(): Flowable<MoviesRepositoryModel>
 
-    fun fetchMoviesDetails(movieName: String): Single<MovieDetail>
+    fun movieDetailsSingle(movieName: String): Single<MovieDetail>
 }
 
 class DummyMoviesRepositoryThatShouldBeReplaced : MoviesRepository {
@@ -26,9 +27,12 @@ class DummyMoviesRepositoryThatShouldBeReplaced : MoviesRepository {
         get() = Flowable
             .timer(2L, TimeUnit.SECONDS)
             .map { _ ->
-                MoviesRepositoryModel.Data(0.until(20).map {
-                    Movie("Dummy movie title $it", 0)
-                })
+                MoviesRepositoryModel.Data(
+                    0.until(20)
+                        .map { Movie("Dummy movie title $it", 0) }
+                        .toMutableList()
+                        .apply { add(0, Movie("Some name", 1)) }
+                )
             }
 
     override fun fetchMovies() {
@@ -42,7 +46,7 @@ class DummyMoviesRepositoryThatShouldBeReplaced : MoviesRepository {
 
     override fun moviesStream(): Flowable<MoviesRepositoryModel> = moviesProcessor.onBackpressureLatest()
 
-    override fun fetchMoviesDetails(movieName: String) = Single.just(
+    override fun movieDetailsSingle(movieName: String) = Single.just(
         MovieDetail(
             "Some name",
             4.5f,

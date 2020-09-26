@@ -1,24 +1,34 @@
 package com.hr.core.repository
 
+import io.reactivex.Flowable
+import io.reactivex.processors.BehaviorProcessor
+import javax.inject.Inject
+
+typealias LikedMovies = Map<String, Boolean>
 
 interface LikedMoviesRepository {
 
-    fun updateLike(movieName: String, liked: Boolean)
+    fun likedMoviesStream(): Flowable<LikedMovies>
 
-    fun getState(): Map<String, Boolean>
+    fun fetch()
+
+    fun updateLike(movieName: String, liked: Boolean)
 }
 
-/**
- * Simple in-memory cached app-scoped data
- */
-class LikedMoviesRepositoryImpl : LikedMoviesRepository {
+class LikedMoviesRepositoryImpl @Inject constructor(
+    private val likedMoviesCache: LikedMoviesCache
+) : LikedMoviesRepository {
 
-    private val likedMoviesMap: MutableMap<String, Boolean> = HashMap()
+    private val moviesProcessor: BehaviorProcessor<LikedMovies> = BehaviorProcessor.createDefault(likedMoviesCache.getState())
 
-    override fun updateLike(movieName: String, liked: Boolean) {
-        likedMoviesMap[movieName] = liked
+    override fun likedMoviesStream(): Flowable<LikedMovies> = moviesProcessor.onBackpressureLatest()
+
+    override fun fetch() {
+        moviesProcessor.onNext(likedMoviesCache.getState())
     }
 
-    override fun getState(): Map<String, Boolean> = likedMoviesMap
+    override fun updateLike(movieName: String, liked: Boolean) {
+        likedMoviesCache.updateLike(movieName, liked)
+        moviesProcessor.onNext(likedMoviesCache.getState())
+    }
 }
-

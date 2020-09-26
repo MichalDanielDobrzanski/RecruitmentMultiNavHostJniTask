@@ -1,8 +1,6 @@
 package com.hr.test.main
 
 import android.os.Bundle
-import android.view.View
-import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -12,6 +10,7 @@ import com.hr.core.viewmodel.ContentMovieViewStateData
 import com.hr.core.viewmodel.MoviesViewModel
 import com.hr.core.viewmodel.MoviesViewState
 import com.hr.test.NavigationGraphMainDirections
+import kotlinx.android.synthetic.main.main_activity.*
 
 abstract class MainMovieFragment : Fragment() {
 
@@ -28,11 +27,6 @@ abstract class MainMovieFragment : Fragment() {
     @LayoutRes
     abstract fun itemLayoutId(): Int
 
-    @CallSuper
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
     private fun navigateToDetailScreen(movieName: String) {
         val action = NavigationGraphMainDirections.actionGlobalMovieDetailFragment(movieName)
         findNavController().navigate(action)
@@ -42,13 +36,33 @@ abstract class MainMovieFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
         viewModel.observeMovies().observe(viewLifecycleOwner, Observer {
-            if (it is MoviesViewState.Content) {
-                renderContent(it.movieList)
-            }
+            renderState(it)
         })
     }
 
+    private fun renderState(viewState: MoviesViewState) {
+        when (viewState) {
+            MoviesViewState.Loading -> {
+                renderLoading()
+            }
+            is MoviesViewState.Content -> {
+                renderContent(viewState.movieList)
+            }
+            else -> {
+                // no-op
+            }
+        }
+    }
+
+    private fun renderLoading() {
+        contentViewAnimator.displayedChild = LOADING_INDEX
+    }
+
     private fun renderContent(movieList: List<ContentMovieViewStateData>) {
+        contentViewAnimator.displayedChild = CONTENT_INDEX
         moviesAdapter.setMovies(movieList)
     }
 }
+
+private const val LOADING_INDEX = 0
+private const val CONTENT_INDEX = 1

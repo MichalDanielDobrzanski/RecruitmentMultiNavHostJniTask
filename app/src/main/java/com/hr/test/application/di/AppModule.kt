@@ -1,9 +1,6 @@
 package com.hr.test.application.di
 
-import com.hr.core.repository.DummyMoviesRepositoryThatShouldBeReplaced
-import com.hr.core.repository.LikedMoviesRepository
-import com.hr.core.repository.LikedMoviesRepositoryImpl
-import com.hr.core.repository.MoviesRepository
+import com.hr.core.repository.*
 import com.hr.core.usecase.GetMoviesUseCase
 import dagger.Module
 import dagger.Provides
@@ -23,8 +20,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideLikedMoviesRepositoryImpl(): LikedMoviesRepositoryImpl =
-        LikedMoviesRepositoryImpl()
+    fun provideLikedMoviesRepositoryImpl(): LikedMoviesCacheImpl =
+        LikedMoviesCacheImpl()
 
     @Provides
     @Singleton

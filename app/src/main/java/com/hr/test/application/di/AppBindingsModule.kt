@@ -1,9 +1,6 @@
 package com.hr.test.application.di
 
-import com.hr.core.repository.MoviesRepository
-import com.hr.core.repository.DummyMoviesRepositoryThatShouldBeReplaced
-import com.hr.core.repository.LikedMoviesRepository
-import com.hr.core.repository.LikedMoviesRepositoryImpl
+import com.hr.core.repository.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -17,5 +14,8 @@ abstract class AppBindingsModule {
     abstract fun bindMoviesRepository(movieSourceImpl: DummyMoviesRepositoryThatShouldBeReplaced): MoviesRepository
 
     @Binds
-    abstract fun bindLikedMoviesRepository(likedMoviesRepositoryImpl: LikedMoviesRepositoryImpl): LikedMoviesRepository
+    abstract fun bindLikedMoviesRepository(likedMoviesRepositoryImpl: LikedMoviesCacheImpl): LikedMoviesCache
+
+    @Binds
+    abstract fun bindLikedMoviesReactiveRepository(likedMoviesReactiveRepository: LikedMoviesRepositoryImpl): LikedMoviesRepository
 }

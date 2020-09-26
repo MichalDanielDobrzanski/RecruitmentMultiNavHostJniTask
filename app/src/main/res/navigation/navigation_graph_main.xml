@@ -14,7 +14,7 @@
     <fragment
         android:id="@+id/listFragment"
         android:name="com.hr.test.main.list.ListFragment"
-        android:label="DashboardFragment" />
+        android:label="ListFragment" />
     <fragment
         android:id="@+id/gridFragment"
         android:name="com.hr.test.main.grid.GridFragment"

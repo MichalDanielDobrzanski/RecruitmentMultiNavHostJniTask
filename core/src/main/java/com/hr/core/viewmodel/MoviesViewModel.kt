@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.ViewModel
 import com.hr.core.usecase.GetMoviesUseCase
-import com.hr.models.MovieDetail
 
 class MoviesViewModel @ViewModelInject constructor(
     private val getMoviesUseCase: GetMoviesUseCase
@@ -17,6 +16,6 @@ class MoviesViewModel @ViewModelInject constructor(
 
     fun updateLike(movieName: String, liked: Boolean) = getMoviesUseCase.updateLike(movieName, liked)
 
-    fun observeMoviesDetails(movieName: String): LiveData<MovieDetail> =
-        LiveDataReactiveStreams.fromPublisher(getMoviesUseCase.fetchMoviesDetails(movieName).toFlowable())
+    fun observeMoviesDetails(movieName: String): LiveData<MovieDetailViewState> =
+        LiveDataReactiveStreams.fromPublisher(getMoviesUseCase.fetchMoviesDetails(movieName))
 }

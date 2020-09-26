@@ -10,7 +10,7 @@ import com.hr.test.utils.inflateNoAttach
 import kotlinx.android.synthetic.main.movie_grid_item_view.view.*
 
 class MoviesAdapter(
-    @LayoutRes private val itemLayoutId:  Int,
+    @LayoutRes private val itemLayoutId: Int,
     private val onLikeItem: (String, Boolean) -> Unit,
     private val onDetailClickItem: (String) -> Unit
 ) : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
@@ -45,11 +45,13 @@ class MoviesAdapter(
                 likeButton.setOnClickListener {
                     likedMovieState = !likedMovieState
                     val newItemState = movie.copy(liked = likedMovieState)
-                    movies.indexOf(movie).takeIf { it != -1 }?.let { idx ->
-                        movies.removeAt(idx)
-                        movies.add(idx, newItemState)
-                        notifyItemChanged(idx)
-                    }
+                    movies.indexOf(movie)
+                        .takeIf { it != -1 }
+                        ?.let { idx ->
+                            movies.removeAt(idx)
+                            movies.add(idx, newItemState)
+                            notifyItemChanged(idx)
+                        }
                     onLikeItem(movieName, likedMovieState)
                 }
                 setOnClickListener {

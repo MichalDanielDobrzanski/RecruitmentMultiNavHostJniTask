@@ -1,15 +1,18 @@
 package com.hr.test.main.detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.DrawableRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.hr.core.viewmodel.MoviesViewModel
 import com.hr.test.R
+import com.hr.test.main.MainActivity
 import com.hr.test.main.detail.actors.ActorsAdapter
 import com.hr.test.utils.inflateNoAttach
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,6 +20,8 @@ import kotlinx.android.synthetic.main.detail_movie_fragment.*
 
 @AndroidEntryPoint
 class MovieDetailFragment : Fragment() {
+
+    private var likedMovie: Boolean = false
 
     private lateinit var actorsAdapter: ActorsAdapter
 
@@ -34,11 +39,24 @@ class MovieDetailFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val viewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
-        viewModel.observeMoviesDetails(fragmentArgs.movieName).observe(viewLifecycleOwner, Observer {
-            movieDescriptionTextView.text = it.description
-            scoreRatingBar.rating = it.score
-            actorsAdapter.update(it.actors)
-        })
+        ViewModelProvider(this).get(MoviesViewModel::class.java).apply {
+            observeMoviesDetails(fragmentArgs.movieName)
+                .observe(viewLifecycleOwner, Observer {
+                    val detail = it.movieDetail
+                    movieDescriptionTextView.text = detail.description
+                    scoreRatingBar.rating = detail.score
+                    likedMovie = it.liked
+                    likeFloatingActionButton.setImageResource(getIconForLikeState())
+                    likeFloatingActionButton.setOnClickListener {
+                        likedMovie = !likedMovie
+                        likeFloatingActionButton.setImageResource(getIconForLikeState())
+                        updateLike(detail.movieName, likedMovie)
+                    }
+                    actorsAdapter.update(detail.actors)
+                })
+        }
     }
+
+    @DrawableRes
+    private fun getIconForLikeState(): Int = if (likedMovie) R.drawable.ic_like_icon else R.drawable.ic_not_liked_icon
 }
