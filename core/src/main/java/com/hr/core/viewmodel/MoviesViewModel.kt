@@ -15,4 +15,6 @@ class MoviesViewModel @ViewModelInject constructor(
     fun fetch() = getMoviesUseCase.fetch()
 
     fun updateLike(movieName: String, liked: Boolean) = getMoviesUseCase.updateLike(movieName, liked)
+
+    fun fetchMoviesDetails(movieName: String) = getMoviesUseCase.fetchMoviesDetails(movieName)
 }

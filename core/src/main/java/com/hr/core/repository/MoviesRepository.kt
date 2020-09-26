@@ -1,14 +1,19 @@
 package com.hr.core.repository
 
+import com.hr.models.Actor
 import com.hr.models.Movie
+import com.hr.models.MovieDetail
 import io.reactivex.Flowable
+import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.processors.BehaviorProcessor
 import java.util.concurrent.TimeUnit
 
 interface MoviesRepository {
+    fun fetchMovies()
     fun moviesStream(): Flowable<MoviesRepositoryModel>
-    fun fetch()
+
+    fun fetchMoviesDetails(movieName: String): Single<MovieDetail>
 }
 
 class DummyMoviesRepositoryThatShouldBeReplaced : MoviesRepository {
@@ -26,7 +31,7 @@ class DummyMoviesRepositoryThatShouldBeReplaced : MoviesRepository {
                 })
             }
 
-    override fun fetch() {
+    override fun fetchMovies() {
         compositeDisposable.clear()
         compositeDisposable.add(
             dummyMoviesStream
@@ -37,5 +42,18 @@ class DummyMoviesRepositoryThatShouldBeReplaced : MoviesRepository {
 
     override fun moviesStream(): Flowable<MoviesRepositoryModel> = moviesProcessor.onBackpressureLatest()
 
-
+    override fun fetchMoviesDetails(movieName: String) = Single.just(
+        MovieDetail(
+            "Some name",
+            4.5f,
+            listOf(
+                Actor(
+                    "Jennifer Connelly",
+                    39,
+                    "https://m.media-amazon.com/images/M/MV5BOTczNTgzODYyMF5BMl5BanBnXkFtZTcwNjk4ODk4Mw@@._V1_UY317_CR12,0,214,317_AL_.jpg"
+                )
+            ),
+            "Very cool film. I recomment it"
+        )
+    )
 }
