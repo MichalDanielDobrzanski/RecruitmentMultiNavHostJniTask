@@ -1,27 +1,35 @@
 package com.hr.test.main
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.hr.core.viewmodel.ContentMovieViewStateData
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.hr.core.viewmodel.MoviesViewModel
 import com.hr.core.viewmodel.MoviesViewState
 import com.hr.test.R
+import com.hr.test.main.navigation.MainTabManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main_layout.*
+import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.android.synthetic.main.main_content_view.*
 import kotlinx.android.synthetic.main.main_error_view.*
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+
+    private val tabManager: MainTabManager by lazy { MainTabManager(this) }
 
     private lateinit var viewModel: MoviesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main_layout)
+        setContentView(R.layout.main_activity)
+
+
+        if (savedInstanceState == null) {
+            tabManager.useStartingController()
+        }
 
         viewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
         viewModel.fetch()
@@ -35,7 +43,7 @@ class MainActivity : AppCompatActivity() {
             renderLoading()
         }
         is MoviesViewState.Content -> {
-            renderContent(viewState.movieList)
+            renderContent()
         }
         MoviesViewState.Error -> {
             renderError()
@@ -46,15 +54,9 @@ class MainActivity : AppCompatActivity() {
         contentViewAnimator.displayedChild = LOADING_INDEX
     }
 
-    private fun renderContent(campaignModelList: List<ContentMovieViewStateData>) {
+    private fun renderContent() {
         contentViewAnimator.displayedChild = CONTENT_INDEX
-        contentMovieListRecyclerView.apply {
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = MoviesAdapter { movieName, liked ->
-                viewModel.updateLike(movieName, liked)
-            }.apply { setMovies(campaignModelList) }
-        }
+        bottomNavigationView.setOnNavigationItemSelectedListener(this)
     }
 
     private fun renderError() {
@@ -64,6 +66,18 @@ class MainActivity : AppCompatActivity() {
             viewModel.fetch()
         }
     }
+
+    override fun onBackPressed() {
+        if (!tabManager.onBackPressed()) {
+            finish()
+        }
+    }
+
+    override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
+        tabManager.switchTab(menuItem.itemId)
+        return true
+    }
+
 }
 
 private const val LOADING_INDEX = 0
