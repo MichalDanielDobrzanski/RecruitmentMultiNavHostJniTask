@@ -21,4 +21,5 @@ Fork this repo. Explore existing code. It has some good bits and some bad bits. 
     - Use any library you want
 
 ## Resources:
+- [Multi NavHosts](https://github.com/moallemi/MultiNavHost)
 - [Saving state in view pager](https://newfivefour.com/android-viewpager-saving-state-without-fragments.html)
