@@ -4,4 +4,7 @@
     <string name="data_error_text">There was an error with fetching movies data. Please retry.</string>
     <string name="view_list">List</string>
     <string name="view_grid">Grid</string>
+    <string name="score">Score:</string>
+    <string name="details">Details:</string>
+    <string name="age_text">Age:</string>
 </resources>
