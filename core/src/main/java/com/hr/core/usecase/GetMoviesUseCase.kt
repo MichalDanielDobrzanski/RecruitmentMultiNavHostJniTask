@@ -35,7 +35,9 @@ class GetMoviesUseCase @Inject constructor(
         return MoviesViewState.Content(merged)
     }
 
-    fun fetch() = moviesRepository.fetch()
+    fun fetch() = moviesRepository.fetchMovies()
 
     fun updateLike(movieName: String, liked: Boolean) = likedMoviesRepository.updateLike(movieName, liked)
+
+    fun fetchMoviesDetails(movieName: String) = moviesRepository.fetchMoviesDetails(movieName)
 }
