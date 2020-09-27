@@ -20,6 +20,13 @@ Fork this repo. Explore existing code. It has some good bits and some bad bits. 
     - Improve the UI
     - Use any library you want
 
+## Native code:
+- using marshalling for ensuring that objects' data is copied from native to JVM memory
+- using callbacks on particular instance apporach
+- using GlobalReference for accessing particular JVM instance
+- using `javap -s -p core.build.intermediates.javac.debug.classes.com.hr.core.repository.MoviesNativeRepository` for JVM signatures
+- using `@Keep` so Proguard will not minify and remove unused methods from JVM side
+
 ## Resources:
 - [Multi NavHosts](https://github.com/moallemi/MultiNavHost)
 - [Saving state in view pager](https://newfivefour.com/android-viewpager-saving-state-without-fragments.html)
