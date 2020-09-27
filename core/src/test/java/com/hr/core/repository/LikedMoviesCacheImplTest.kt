@@ -1,5 +1,7 @@
 package com.hr.core.repository
 
+import com.hr.core.repository.like.LikedMoviesCache
+import com.hr.core.repository.like.LikedMoviesCacheImpl
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.BeforeEach

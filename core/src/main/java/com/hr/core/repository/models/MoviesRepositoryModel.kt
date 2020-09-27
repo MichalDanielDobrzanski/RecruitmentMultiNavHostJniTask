@@ -1,4 +1,4 @@
-package com.hr.core.repository
+package com.hr.core.repository.models
 
 import com.hr.models.Movie
 

@@ -17,5 +17,5 @@ class MoviesViewModel @ViewModelInject constructor(
     fun updateLike(movieName: String, liked: Boolean) = getMoviesUseCase.updateLike(movieName, liked)
 
     fun observeMoviesDetails(movieName: String): LiveData<MovieDetailViewState> =
-        LiveDataReactiveStreams.fromPublisher(getMoviesUseCase.fetchMoviesDetails(movieName))
+        LiveDataReactiveStreams.fromPublisher(getMoviesUseCase.moviesDetailsFlowable(movieName))
 }

@@ -1,4 +1,4 @@
-package com.hr.core.repository
+package com.hr.core.repository.like
 
 import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
