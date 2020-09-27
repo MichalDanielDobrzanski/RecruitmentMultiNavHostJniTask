@@ -60,12 +60,19 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/emptySpace"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/movieDescriptionTextView"
             tools:listitem="@layout/detail_movie_actor_item_view" />
 
+        <View
+            android:id="@+id/emptySpace"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/actorsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/detail_fab_empty_space_height"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

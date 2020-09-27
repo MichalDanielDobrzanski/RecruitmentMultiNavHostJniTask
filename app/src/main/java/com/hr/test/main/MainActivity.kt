@@ -30,6 +30,11 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             tabManager.useStartingController()
         }
 
+        supportActionBar?.apply {
+            setHomeButtonEnabled(true)
+            setDisplayHomeAsUpEnabled(true)
+        }
+
         viewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
         viewModel.fetch()
         viewModel.observeMovies().observe(this, Observer {

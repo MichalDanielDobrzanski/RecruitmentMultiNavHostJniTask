@@ -1,7 +1,6 @@
 package com.hr.test.main.detail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import com.hr.core.viewmodel.MovieDetailViewState
 import com.hr.core.viewmodel.MoviesViewModel
 import com.hr.test.R
-import com.hr.test.main.MainActivity
 import com.hr.test.main.detail.actors.ActorsAdapter
 import com.hr.test.utils.inflateNoAttach
 import dagger.hilt.android.AndroidEntryPoint

@@ -37,6 +37,7 @@ class ActorsAdapter(
         fun bind(actor: Actor) {
             itemView.apply {
                 actorNameTextView.text = actor.name
+                actorAgeTextView.text = actor.age.toString()
                 Glide.with(this@ActorsAdapter.context)
                     .load(actor.imageUrl)
                     .placeholder(createCircularProgressDrawable(context.applicationContext))

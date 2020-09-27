@@ -1,6 +1,8 @@
 package com.hr.test.application.di
 
 import com.hr.core.repository.*
+import com.hr.core.repository.like.LikedMoviesCacheImpl
+import com.hr.core.repository.like.LikedMoviesRepository
 import com.hr.core.usecase.GetMoviesUseCase
 import dagger.Module
 import dagger.Provides
@@ -14,9 +16,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideMovieSourceImpl(): DummyMoviesRepositoryThatShouldBeReplaced =
-        DummyMoviesRepositoryThatShouldBeReplaced()
-
+    fun provideMovieNativeRepository(): MoviesNativeRepository =
+        MoviesNativeRepository()
 
     @Provides
     @Singleton
