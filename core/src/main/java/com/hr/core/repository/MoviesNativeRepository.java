@@ -33,7 +33,7 @@ public class MoviesNativeRepository implements MoviesRepository {
 
     private final ByteBuffer nativeMoviePointer;
 
-    private final Semaphore semaphore = new Semaphore(0);
+    private final Semaphore movieDetailSemaphore = new Semaphore(0);
 
     private final AtomicReference<MovieDetail> movieDetailAtomicReference = new AtomicReference<>();
 
@@ -74,7 +74,7 @@ public class MoviesNativeRepository implements MoviesRepository {
         }
         final MovieDetail movieDetail = new MovieDetail(movieName, score, actorList, description);
         movieDetailAtomicReference.set(movieDetail);
-        semaphore.release();
+        movieDetailSemaphore.release();
     }
 
     @Override
@@ -98,7 +98,7 @@ public class MoviesNativeRepository implements MoviesRepository {
                     @Override
                     public void run() {
                         try {
-                            semaphore.acquire();
+                            movieDetailSemaphore.acquire();
                             emitter.onNext(movieDetailAtomicReference.get());
                         } catch (InterruptedException e) {
                             e.printStackTrace();

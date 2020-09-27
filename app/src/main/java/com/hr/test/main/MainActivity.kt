@@ -3,6 +3,7 @@ package com.hr.test.main
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NavUtils
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -31,7 +32,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         }
 
         supportActionBar?.apply {
-            setHomeButtonEnabled(true)
             setDisplayHomeAsUpEnabled(true)
         }
 
@@ -72,14 +72,28 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     }
 
     override fun onBackPressed() {
-        if (!tabManager.onBackPressed()) {
-            finish()
-        }
+        handleBack()
     }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         tabManager.switchTab(menuItem.itemId)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                handleBack()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun handleBack() {
+        if (!tabManager.onBackPressed()) {
+            finish()
+        }
     }
 }
 

@@ -38,8 +38,10 @@ class ActorsAdapter(
             itemView.apply {
                 actorNameTextView.text = actor.name
                 actorAgeTextView.text = actor.age.toString()
+                val url = if (actor.imageUrl == "") null else actor.imageUrl
                 Glide.with(this@ActorsAdapter.context)
-                    .load(actor.imageUrl)
+                    .load(url)
+                    .fallback(R.drawable.ic_no_image)
                     .placeholder(createCircularProgressDrawable(context.applicationContext))
                     .error(R.drawable.ic_no_network)
                     .into(actorAvatarImageView)

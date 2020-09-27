@@ -4,6 +4,8 @@ import com.hr.core.repository.*
 import com.hr.core.repository.like.LikedMovies
 import com.hr.core.repository.like.LikedMoviesRepository
 import com.hr.core.repository.models.MoviesRepositoryModel
+import com.hr.core.schedulers.AndroidSchedulersProvider
+import com.hr.core.schedulers.SchedulersProvider
 import com.hr.core.viewmodel.ContentMovieViewStateData
 import com.hr.core.viewmodel.MovieDetailViewState
 import com.hr.core.viewmodel.MoviesViewState
@@ -14,7 +16,8 @@ import javax.inject.Inject
 
 class GetMoviesUseCase @Inject constructor(
     private val moviesRepository: MoviesRepository,
-    private val likedMoviesRepository: LikedMoviesRepository
+    private val likedMoviesRepository: LikedMoviesRepository,
+    private val schedulersProvider: SchedulersProvider
 ) {
     val moviesViewStateStream: Flowable<MoviesViewState>
         get() = Flowable.combineLatest(
@@ -27,6 +30,7 @@ class GetMoviesUseCase @Inject constructor(
                     MoviesRepositoryModel.Error -> MoviesViewState.Error
                 }
             })
+            .observeOn(schedulersProvider.ui())
 
     fun fetch() = moviesRepository.fetchMovies()
 
@@ -46,4 +50,5 @@ class GetMoviesUseCase @Inject constructor(
             BiFunction { model: MovieDetail, likedMovies: LikedMovies ->
                 MovieDetailViewState(model, isLiked(likedMovies, model.movieName))
             })
+            .observeOn(schedulersProvider.ui())
 }
