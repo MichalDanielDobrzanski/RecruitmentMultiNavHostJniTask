@@ -43,7 +43,7 @@ class MovieDetailFragment : Fragment() {
                 .observe(viewLifecycleOwner, Observer {
                     val detail = it.movieDetail
                     movieDescriptionTextView.text = detail.description
-                    scoreRatingBar.rating = detail.score
+                    scoreRatingBar.rating = detail.score / 2
                     likedMovie = it.liked
                     likeFloatingActionButton.setImageResource(getIconForLikeState())
                     likeFloatingActionButton.setOnClickListener {
