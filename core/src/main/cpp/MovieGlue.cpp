@@ -3,6 +3,8 @@
 
 #include <MovieController.hpp>
 #include <MovieHolder.hpp>
+#include <MovieCallback.hpp>
+#include <Movie.hpp>
 
 static const char *STRING_JVM_SIG = "java/lang/String";
 
@@ -26,21 +28,25 @@ Java_com_hr_core_repository_MoviesNativeRepository_fetchMoviesJni(
     using namespace movies;
     using namespace std;
     auto holder = (MovieHolder *) env->GetDirectBufferAddress(ptr);
-    vector<Movie *> moviesVector = holder->movieController.getMovies();
-    vector<string> marshalled;
-    auto it = moviesVector.begin();
-    while (it != moviesVector.end()) {
-        marshalled.push_back((*it)->name);
-        marshalled.push_back(to_string((*it)->lastUpdated));
-        it++;
-    }
 
-    auto jObjectArrayMovies = (jobjectArray) env->NewObjectArray(marshalled.size(), env->FindClass(STRING_JVM_SIG), nullptr);
-    for (int i = 0; i < marshalled.size(); i++) {
-        jstring jvmString = env->NewStringUTF(marshalled.at(i).data());
-        env->SetObjectArrayElement(jObjectArrayMovies, i, jvmString);
-    }
-    env->CallVoidMethod(holder->instance, holder->onMoviesFetchedMethod, jObjectArrayMovies);
+    std::function<void(std::vector<Movie*>)> callback = [env, holder](const std::vector<movies::Movie*>& moviesVector) {
+        vector<string> marshalled;
+        auto it = moviesVector.begin();
+        while (it != moviesVector.end()) {
+            marshalled.push_back((*it)->name);
+            marshalled.push_back(to_string((*it)->lastUpdated));
+            it++;
+        }
+
+        auto jObjectArrayMovies = (jobjectArray) env->NewObjectArray(marshalled.size(), env->FindClass(STRING_JVM_SIG), nullptr);
+        for (int i = 0; i < marshalled.size(); i++) {
+            jstring jvmString = env->NewStringUTF(marshalled.at(i).data());
+            env->SetObjectArrayElement(jObjectArrayMovies, i, jvmString);
+        }
+        env->CallVoidMethod(holder->instance, holder->onMoviesFetchedMethod, jObjectArrayMovies);
+    };
+
+    holder->movieController.getMovies(callback);
 }
 
 extern "C"

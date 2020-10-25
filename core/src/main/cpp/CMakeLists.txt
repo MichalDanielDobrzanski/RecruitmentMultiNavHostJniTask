@@ -5,6 +5,8 @@ cmake_minimum_required(VERSION 3.4.1)
 add_library(movies-lib
         SHARED
         MovieGlue.cpp
+        movie/Movie.hpp
+        movie/MovieCallback.hpp
         movie/MovieController.hpp
         movie/MovieHolder.hpp)
 

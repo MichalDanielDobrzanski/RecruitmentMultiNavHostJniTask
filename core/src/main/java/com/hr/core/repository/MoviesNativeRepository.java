@@ -47,6 +47,8 @@ public class MoviesNativeRepository implements MoviesRepository {
         nativeMoviePointer = createMovieHolder();
     }
 
+
+
     @Keep
     private void onMoviesFetched(final String[] marshalledMovies) {
         final List<Movie> movieList = new LinkedList<>();

@@ -11,6 +11,8 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <Movie.hpp>
+#include <MovieCallback.hpp>
 
 namespace movies {
     class Actor {
@@ -20,13 +22,6 @@ namespace movies {
         
         //optional challenge 1: Load image from URL
         std::string imageUrl;
-    };
-    
-    class Movie {
-    public:
-        std::string name;
-        int lastUpdated;
-        
     };
     
     class MovieDetail {
@@ -89,8 +84,9 @@ namespace movies {
         }
         
         //Returns list of movies
-        std::vector<Movie*> getMovies() const {
-            return _movies;
+        void getMovies(std::function<void(std::vector<Movie*>)> callback ) const {
+            // io + threading
+            callback(_movies);
         }
         
         //Returns details about a specific movie
